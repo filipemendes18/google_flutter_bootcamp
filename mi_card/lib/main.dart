@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mi_card/shared/themes/app_images.dart';
+import 'package:mi_card/shared/themes/app_text_styles.dart';
 
 void main() {
   runApp(
@@ -15,27 +17,58 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.teal,
         body: SafeArea(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: double.infinity,
-                width: 100,
-                color: Colors.red,
+              CircleAvatar(
+                radius: 50.0,
+                backgroundImage: AssetImage(AppImages.profilePicture),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(color: Colors.yellow, height: 60, width: 60),
-                  Container(
-                    color: Colors.green,
-                    height: 60,
-                    width: 60,
+              Text(
+                'Filipe Mendes',
+                style: TextStyles.titleLype,
+              ),
+              Text(
+                'FLUTTER DEVELOPER',
+                style: TextStyles.titleOcupation,
+              ),
+              SizedBox(
+                height: 20,
+                width: 150,
+                child: Divider(
+                  color: Colors.teal[100],
+                ),
+              ),
+              Card(
+                color: Colors.white,
+                margin: EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 10.0,
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.phone,
+                    color: Colors.teal[900],
                   ),
-                ],
+                  title: Text(
+                    '+99 940028922',
+                    style: TextStyles.titleMain,
+                  ),
+                ),
               ),
-              Container(
-                  height: double.infinity, width: 100, color: Colors.blue),
+              Card(
+                color: Colors.white,
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                child: ListTile(
+                    leading: Icon(
+                      Icons.email,
+                      color: Colors.teal[900],
+                    ),
+                    title: Text(
+                      'filipe@gmail.com',
+                      style: TextStyles.titleMain,
+                    )),
+              ),
             ],
           ),
         ),
@@ -43,27 +76,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         backgroundColor: Colors.teal,
-//         body: SafeArea(
-//           child: Container(
-//             height: 40,
-//             width: 100,
-//             margin: EdgeInsets.symmetric(
-//                 vertical: 200, horizontal: 100), // Alinha o próprio Widget
-//             padding: EdgeInsets.all(10), // Alinha coisas DENTRO do Widget
-//             child: Center(child: Text('Hello!')),
-//             color: Colors.white,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
