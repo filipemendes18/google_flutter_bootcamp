@@ -1,16 +1,19 @@
-# dicee
+# Dicee
 
-A new Flutter project.
+Um app de dado virtual que randomicamente imprime valores na tela através de dados sempre que o usuário clica em um deles, além de mostrar o valor total da soma entre os valores dos dados.
 
-## Getting Started
+## Conhecimentos Adquiridos
 
-This project is a starting point for a Flutter application.
+- Entendimento mais profundo sobre Stateful Widgets
+- Uso do Widget TextButton
 
-A few resources to get you started if this is your first Flutter project:
+## Implementações à parte
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Gerência de Estado com Mobx
+- Comunicação entre Controller e HomePage
+- Design e cores próprios
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
+
