@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
@@ -11,75 +13,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SafeArea(
-        child: Column(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              color: Colors.red,
-              child: TextButton(
-                  onPressed: () {
-                    final player = AudioCache();
-                    player.play('audios/note1.wav');
-                  },
-                  child: Text('')),
-            ),
-            Container(
-              color: Colors.orange,
-              child: TextButton(
-                  onPressed: () {
-                    final player = AudioCache();
-                    player.play('audios/note2.wav');
-                  },
-                  child: Text('')),
-            ),
-            Container(
-              color: Colors.yellow,
-              child: TextButton(
-                  onPressed: () {
-                    final player = AudioCache();
-                    player.play('audios/note3.wav');
-                  },
-                  child: Text('')),
-            ),
-            Container(
-              color: Colors.green,
-              child: TextButton(
-                  onPressed: () {
-                    final player = AudioCache();
-                    player.play('audios/note4.wav');
-                  },
-                  child: Text('')),
-            ),
-            Container(
-              color: Colors.teal,
-              child: TextButton(
-                  onPressed: () {
-                    final player = AudioCache();
-                    player.play('audios/note5.wav');
-                  },
-                  child: Text('')),
-            ),
-            Container(
-              color: Colors.blue,
-              child: TextButton(
-                  onPressed: () {
-                    final player = AudioCache();
-                    player.play('audios/note6.wav');
-                  },
-                  child: Text('')),
-            ),
-            Container(
-              color: Colors.purple,
-              child: TextButton(
-                  onPressed: () {
-                    final player = AudioCache();
-                    player.play('audios/note7.wav');
-                  },
-                  child: Text('')),
-            ),
+            buildKeys(Colors.red, "audios/note1.wav"),
+            buildKeys(Colors.orange, "audios/note2.wav"),
+            buildKeys(Colors.yellow, "audios/note3.wav"),
+            buildKeys(Colors.green, "audios/note4.wav"),
+            buildKeys(Colors.teal, "audios/note5.wav"),
+            buildKeys(Colors.blue, "audios/note6.wav"),
+            buildKeys(Colors.purple, "audios/note7.wav"),
           ],
         ),
       ),
     );
   }
+}
+
+Widget buildKeys(Color color, String audio) {
+  return Expanded(
+    child: Container(
+      color: color,
+      child: TextButton(
+          onPressed: () {
+            final player = AudioCache();
+            player.play(audio);
+          },
+          child: Text('')),
+    ),
+  );
 }
