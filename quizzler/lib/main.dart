@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/quiz_brain.dart';
+import 'package:quizzler/result_widget.dart';
 
 void main() {
-  runApp(Quizzler());
+  runApp(const Quizzler());
 }
+
+QuizBrain quizBrain = QuizBrain();
 
 class Quizzler extends StatelessWidget {
   const Quizzler({Key? key}) : super(key: key);
@@ -10,6 +14,7 @@ class Quizzler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
         body: const SafeArea(
@@ -32,17 +37,92 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.',
-  ];
-  List<bool> answers = [
-    false,
-    true,
-    true,
-  ];
-  int currentQuestion = 0;
+  int correctAnswers = 0;
+  int incorrectAnswers = 0;
+  void checkAnswer(bool pickedAnswer) {
+    bool checkAnswer = quizBrain.getQuestionAnswer();
+    if (quizBrain.isFinished()) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Center(child: Text('Congratulations!')),
+                titlePadding: const EdgeInsets.only(top: 10),
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Your score:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ResultWidget(
+                            text: '$correctAnswers Correct',
+                            icon: const Icon(
+                              Icons.check,
+                              color: Colors.green,
+                            )),
+                        ResultWidget(
+                            text: '$incorrectAnswers Incorrect',
+                            icon: const Icon(
+                              Icons.check,
+                              color: Colors.red,
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+                contentPadding: const EdgeInsets.all(5),
+                actions: [
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        setState(() {
+                          scoreKeeper = [];
+                          quizBrain.reset();
+                          correctAnswers = 0;
+                          incorrectAnswers = 0;
+                        });
+                      },
+                      child: const Text(
+                        'Restart',
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      ),
+                    ),
+                  ),
+                ],
+              ));
+    } else {
+      if (pickedAnswer == checkAnswer) {
+        scoreKeeper.add(const Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+        correctAnswers++;
+      } else {
+        scoreKeeper.add(const Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+        incorrectAnswers++;
+      }
+      setState(() {
+        quizBrain.nextQuestion();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -55,7 +135,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[currentQuestion],
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 25.0,
@@ -69,28 +149,19 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green)),
-              child: const Text(
-                'True',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.green)),
+                child: const Text(
+                  'True',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
                 ),
-              ),
-              onPressed: () {
-                bool checkAnswer = answers[currentQuestion];
-                if (checkAnswer == true) {
-                  print('The user got it right!');
-                } else {
-                  print('The user got it wrong!');
-                }
-                setState(() {
-                  currentQuestion++;
-                });
-              },
-            ),
+                onPressed: () {
+                  checkAnswer(true);
+                }),
           ),
         ),
         Expanded(
@@ -108,15 +179,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool checkAnswer = answers[currentQuestion];
-                if (checkAnswer == false) {
-                  print('The user got it right!');
-                } else {
-                  print('The user got it wrong!');
-                }
-                setState(() {
-                  currentQuestion++;
-                });
+                checkAnswer(false);
               },
             ),
           ),
